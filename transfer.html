@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .container h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .balance {
+            margin: 20px 0;
+            font-size: 1.5rem;
+            color: #333;
+        }
+        .input-group {
+            width: 100%;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #555;
+        }
+        .input-group input {
+            width: calc(100% - 50px);
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .input-group .phone-prefix {
+            display: inline-block;
+            width: 40px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border: 1px solid #ccc;
+            border-right: none;
+            border-radius: 5px 0 0 5px;
+            text-align: center;
+            font-size: 16px;
+        }
+        .phone-input-wrapper {
+            display: flex;
+            align-items: center;
+        }
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .btn-group button {
+            width: 48%;
+            padding: 12px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn-group button:hover {
+            background-color: #0056b3;
+        }
+        .logo {
+            width: 100%;
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+        button.logout {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            background-color: #d9534f;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button.logout:hover {
+            background-color: #c9302c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Image Section -->
+        <img src="image/FalCoins740.png" alt="Logo" class="logo">
+
+        <h1>Transfer Money</h1>
+
+        <!-- Balance Section -->
+        <div class="balance">
+            <span id="userBalance">Balance: ₱0</span>
+        </div>
+
+        <!-- Transfer Amount Input -->
+        <div class="input-group">
+            <label for="amount">Amount to Transfer:</label>
+            <input type="number" id="amount" placeholder="Enter amount">
+        </div>
+
+        <!-- Recipient Number Input -->
+        <div class="input-group">
+            <label for="recipientNumber">Recipient Number:</label>
+            <div class="phone-input-wrapper">
+                <span class="phone-prefix">+63</span>
+                <input type="text" id="recipientNumber" placeholder="Enter phone number">
+            </div>
+        </div>
+
+        <!-- Button Group -->
+        <div class="btn-group">
+            <button onclick="processTransfer()">Transfer</button>
+            <button onclick="window.location.href='thirdpage.html'">Cancel</button>
+        </div>
+
+        <!-- Log Out Button -->
+        <button class="logout" onclick="logout()">Log Out</button>
+    </div>
+
+    <script>
+        // Check if a user is logged in
+        const currentUser = localStorage.getItem('currentUser');
+        if (!currentUser) {
+            window.location.href = 'index.html'; // Redirect to login page if not logged in
+        }
+
+        // Function to fetch and display user balance
+        function displayBalance() {
+            const userData = JSON.parse(localStorage.getItem(currentUser));
+            document.getElementById('userBalance').innerText = `Balance: ₱${userData.balance}`;
+        }
+
+        // Transfer function
+        function processTransfer() {
+            const amount = document.getElementById('amount').value;
+            const recipientNumber = document.getElementById('recipientNumber').value;
+
+            if (amount && recipientNumber) {
+                const userData = JSON.parse(localStorage.getItem(currentUser));
+
+                if (userData.balance >= amount) {
+                    // Deduct amount from the current user's balance
+                    userData.balance -= amount;
+                    // Log the transaction
+                    const transaction = {
+                        amount: `-${amount}`,
+                        date: new Date().toLocaleString(),
+                        recipient: `+63${recipientNumber}`,
+                    };
+                    userData.transactions.push(transaction);
+                    // Save updated user data
+                    localStorage.setItem(currentUser, JSON.stringify(userData));
+
+                    // Show success and update balance
+                    alert('Transfer successful!');
+                    window.location.href = 'thirdpage.html'; // Redirect to dashboard
+                } else {
+                    alert('Insufficient balance.');
+                }
+            } else {
+                alert('Please fill in both fields.');
+            }
+        }
+
+        // Log out function
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html'; // Redirect to login page
+        }
+
+        // Call the display balance function
+        displayBalance();
+    </script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deposit</title>
+    <style>
+        /* Keep the design intact */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .container h1 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 2rem;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            width: 100%;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin-left: 5px;
+            color: #333;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Deposit Funds</h1>
+
+        <div class="input-group">
+            <input type="number" id="depositAmount" placeholder="Enter amount to deposit" />
+        </div>
+
+        <button onclick="deposit()">Deposit</button>
+    </div>
+
+    <script>
+        function deposit() {
+            const amount = parseFloat(document.getElementById('depositAmount').value);
+            if (isNaN(amount) || amount <= 0) {
+                alert("Please enter a valid amount.");
+                return;
+            }
+
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                window.location.href = "index.html"; // Redirect to login if not logged in
+                return;
+            }
+
+            const userData = JSON.parse(localStorage.getItem(currentUser));
+            userData.balance += amount;
+
+            // Save updated balance
+            localStorage.setItem(currentUser, JSON.stringify(userData));
+
+            alert("Deposit successful!");
+            window.location.href = "thirdpage.html"; // Redirect to dashboard after deposit
+        }
+    </script>
+</body>
+</html>

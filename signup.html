@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .container h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .input-group {
+            width: 100%;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .input-group input {
+            width: 80%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+        .input-group label {
+            font-size: 16px;
+            color: #333;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Create Your Account</h1>
+
+        <!-- Sign Up Form -->
+        <form id="signupForm">
+            <!-- Name Input -->
+            <div class="input-group">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" required placeholder="Enter your full name">
+            </div>
+            
+            <!-- Phone Number Input (with +63 prefix) -->
+            <div class="input-group">
+                <label for="phone">Phone Number:</label>
+                <div style="width: 100%; display: flex; justify-content: flex-start; align-items: center;">
+                    <span style="padding: 10px; font-size: 16px;">+63</span>
+                    <input type="text" id="phone" maxlength="10" required placeholder="Enter your 10-digit phone number">
+                </div>
+            </div>
+
+            <!-- Password Input -->
+            <div class="input-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" required placeholder="Enter your password">
+            </div>
+
+            <!-- Sign Up Button -->
+            <button type="submit" class="btn">Sign Up</button>
+        </form>
+    </div>
+
+    <script>
+        // Sign Up Form Submission
+        document.getElementById('signupForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Get user input
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            if (name && phone && password) {
+                // Validate the phone number format
+                if (phone.length === 10 && /^\d+$/.test(phone)) {
+                    // Create user object
+                    const user = {
+                        name: name,
+                        phone: `+63${phone}`,
+                        password: password,
+                        balance: 0, // Default balance to 0
+                        transactions: []
+                    };
+
+                    // Store user data in localStorage (can be replaced with a database)
+                    localStorage.setItem(phone, JSON.stringify(user));
+
+                    // Redirect to the login page (index.html)
+                    alert('Account created successfully!');
+                    window.location.href = 'index.html'; // Redirect to the login page
+                } else {
+                    alert('Please enter a valid 10-digit phone number.');
+                }
+            } else {
+                alert('Please fill in all fields.');
+            }
+        });
+    </script>
+</body>
+</html>

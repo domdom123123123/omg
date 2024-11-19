@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .container h1 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 2rem;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            width: 100%;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin-left: 5px;
+            color: #333;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin: 20px 0;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .footer a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+            width: 150px;
+            height: auto;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="image/FalCoins740.png" alt="Logo" class="logo">
+
+        <h1>Login / Sign Up</h1>
+
+        <div class="input-group">
+            <span>+63</span>
+            <input type="text" id="username" placeholder="Enter your number" maxlength="10" />
+        </div>
+
+        <div class="input-group">
+            <input type="password" id="password" placeholder="Enter your password" />
+        </div>
+
+        <button onclick="login()">Login</button>
+
+        <!-- Sign Up Button styled like Login button -->
+        <button onclick="signup()">Sign Up</button>
+        
+        <div class="footer">
+           
+        </div>
+    </div>
+
+    <script>
+        // Check if user exists in localStorage for login
+        function login() {
+            const username = "+63" + document.getElementById('username').value; // Add +63 prefix
+            const password = document.getElementById('password').value;
+
+            if (!username || !password) {
+                alert("Please fill in both fields.");
+                return;
+            }
+
+            const userData = JSON.parse(localStorage.getItem(username));
+            
+            if (!userData || userData.password !== password) {
+                alert("Invalid username or password.");
+                return;
+            }
+
+            // Store the current user in localStorage
+            localStorage.setItem('currentUser', username);
+            window.location.href = 'thirdpage.html'; // Redirect to thirdpage (dashboard)
+        }
+
+        // Sign-up functionality
+        function signup() {
+            const username = "+63" + document.getElementById('username').value; // Add +63 prefix
+            const password = document.getElementById('password').value;
+
+            if (!username || !password) {
+                alert("Please fill in both fields.");
+                return;
+            }
+
+            // Check if user already exists
+            if (localStorage.getItem(username)) {
+                alert("Account already exists.");
+                return;
+            }
+
+            const userData = {
+                name: prompt("Enter your name: "), // Asking for the name during sign up
+                phone: username,
+                password: password,
+                balance: 0,
+                transactions: []
+            };
+
+            // Save user to localStorage
+            localStorage.setItem(username, JSON.stringify(userData));
+
+            alert("Account created successfully!");
+            window.location.href = 'thirdpage.html'; // Redirect to dashboard after successful signup
+        }
+    </script>
+</body>
+</html>

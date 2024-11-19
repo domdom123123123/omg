@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .container h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .balance {
+            margin: 20px 0;
+            font-size: 1.5rem;
+            color: #333;
+        }
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .btn-group button {
+            width: 48%;
+            padding: 12px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn-group button:hover {
+            background-color: #0056b3;
+        }
+        .transaction-history {
+            width: 100%;
+            margin-top: 20px;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .transaction-history h2 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            color: #333;
+        }
+        .transaction-history ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .transaction-history li {
+            padding: 5px;
+            border-bottom: 1px solid #ddd;
+            color: #555;
+        }
+        .transaction-history li:last-child {
+            border-bottom: none;
+        }
+        button.logout {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            background-color: #d9534f;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button.logout:hover {
+            background-color: #c9302c;
+        }
+        /* Style for the image */
+        .logo {
+            width: 100%;
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Image Section -->
+        <img src="image/FalCoins740.png" alt="Logo" class="logo">
+
+        <h1>Welcome to Your Dashboard</h1>
+
+        <!-- Balance Section -->
+        <div class="balance">
+            <span id="userBalance">Balance: ₱0</span>
+        </div>
+
+        <!-- Button Group -->
+        <div class="btn-group">
+            <button onclick="window.location.href='transfer.html'">Transfer</button>
+            <button onclick="window.location.href='deposit.html'">Deposit</button>
+        </div>
+
+        <!-- Transaction History Section -->
+        <div class="transaction-history">
+            <h2>Transaction History</h2>
+            <ul id="transactionList">
+                <!-- Transactions will be dynamically displayed here -->
+            </ul>
+        </div>
+
+        <!-- Log Out Button -->
+        <button class="logout" onclick="logout()">Log Out</button>
+    </div>
+
+    <script>
+        // Check if a user is logged in
+        const currentUser = localStorage.getItem('currentUser');
+        if (!currentUser) {
+            window.location.href = 'index.html'; // Redirect to login page if not logged in
+        }
+
+        // Function to fetch and display user balance
+        function displayBalance() {
+            const userData = JSON.parse(localStorage.getItem(currentUser));
+            document.getElementById('userBalance').innerText = `Balance: ₱${userData.balance}`;
+        }
+
+        // Function to display transaction history
+        function displayTransactionHistory() {
+            const userData = JSON.parse(localStorage.getItem(currentUser));
+            const transactionList = document.getElementById('transactionList');
+
+            if (userData.transactions.length === 0) {
+                transactionList.innerHTML = "<li>No transactions found.</li>";
+            } else {
+                transactionList.innerHTML = "";
+                userData.transactions.forEach(transaction => {
+                    const transactionItem = document.createElement('li');
+                    transactionItem.innerText = ` ₱${transaction.amount} - ${transaction.date}`;
+                    transactionList.appendChild(transactionItem);
+                });
+            }
+        }
+
+        // Log out function
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html'; // Redirect to login page
+        }
+
+        // Call the display functions
+        displayBalance();
+        displayTransactionHistory();
+    </script>
+</body>
+</html>
